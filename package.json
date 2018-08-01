@@ -1,0 +1,47 @@
+{
+  "name": "resizer",
+  "version": "0.0.1",
+  "description": "A microservice created in order to offer resized images",
+  "main": "dist/index.js",
+  "scripts": {
+    "start": "node dist/index.js",
+    "startmon": "nodemon dist/index.js",
+    "build": "gulp scripts",
+    "test": "mocha --reporter spec --require ts-node/register test/**/*.ts"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/drakeRizz/homework.git"
+  },
+  "author": "Mircea Savin",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/drakeRizz/homework/issues"
+  },
+  "homepage": "https://github.com/drakeRizz/homework#readme",
+  "devDependencies": {
+    "@types/body-parser": "^1.17.0",
+    "@types/chai": "^4.1.4",
+    "@types/chai-http": "^3.0.5",
+    "@types/debug": "0.0.30",
+    "@types/express": "^4.16.0",
+    "@types/mocha": "^5.2.5",
+    "@types/morgan": "^1.7.35",
+    "@types/node": "^10.5.5",
+    "chai": "^4.1.2",
+    "chai-http": "^4.0.0",
+    "gulp": "^3.9.1",
+    "gulp-typescript": "^5.0.0-alpha.3",
+    "mocha": "^5.2.0",
+    "sharp": "^0.20.5",
+    "ts-node": "^7.0.0",
+    "typescript": "^3.0.1"
+  },
+  "dependencies": {
+    "@types/sharp": "^0.17.9",
+    "body-parser": "^1.18.3",
+    "debug": "^3.1.0",
+    "express": "^4.16.3",
+    "morgan": "^1.9.0"
+  }
+}
