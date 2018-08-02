@@ -6,22 +6,24 @@ import fs from 'fs';
 
 class ImageResizer {
 
-    public images_path = process.env.IMAGES_PATH || process.cwd() + '\\images';
+    public images_path = process.env.IMAGES_PATH || path.join(process.cwd(), 'images');
     public stats: StatsCounter;
 
     constructor() {
-        this.stats = new StatsCounter();
+        assureCacheDirectoryExistance(this.images_path);
         assureCacheDirectoryExistance(this.images_path + '\\resized');
+        this.stats = new StatsCounter(this.images_path);
     }
 
     /**
     * Resizes an image
     * @param image_path Path of the image to resize
     * @param size the size as string (Ex: "500x400");
-    * @param preserve_aspect 
+    * @param preserve_aspect should the image aspect be preserved ?
     */
-    resize(image_path: string, size?: string, preserve_aspect?: boolean): Promise<Buffer> {
+    resize(image_path: string, size: string, preserve_aspect?: boolean): Promise<Buffer> {
         let ext = path.extname(image_path);
+        // Path of the future resized image , ex: ..\images\IMAGE_620x480.jpg
         let out_path = path.dirname(image_path) + '\\resized\\' + path.basename(image_path, ext) + (size ? '_' + size : '') + (preserve_aspect ? '_p' : '') + ext;
         // Return a promise for the buffer of the image
         return new Promise((resolve, reject) => {
@@ -39,25 +41,25 @@ class ImageResizer {
                     this.stats.cache_misses++;
                     fs.readFile(image_path, (err, data) => {
                         if (err) reject(err);
-                        if (size) {
-                            let [width, height] = size.split('x').map(x => parseInt(x));
-                            if (isNumeric(width) && isNumeric(height)) {
-                                let transformer = (preserve_aspect ? sharp(data).resize(width, height) : sharp(data).resize(width, height).max());
-                                transformer.toBuffer()
-                                    .then(resized => fs.writeFile(out_path, resized, (err) => {
-                                        if (err) reject(err);
-                                        resolve(resized);
-                                    }))
-                                    .catch(err => reject(err));
-                            } else {
-                                reject('Invalid picture size');
-                            }
+                        let [width, height] = size.split('x').map(x => parseInt(x));
+                        if (isNumeric(width) && isNumeric(height)) {
+                            let transformer = (preserve_aspect ? sharp(data).resize(width, height) : sharp(data).resize(width, height).max());
+                            transformer.toBuffer()
+                                .then(resized => fs.writeFile(out_path, resized, (err) => {
+                                    if (err) reject(err);
+                                    resolve(resized);
+                                }))
+                                .catch(err => reject(err));
+                        } else {
+                            reject('Invalid picture size');
                         }
                     });
                 }
             });
         });
     }
+
+
 }
 function assureCacheDirectoryExistance(path: string) {
     if (!fs.existsSync(path)) {

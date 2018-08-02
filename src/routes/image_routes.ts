@@ -1,30 +1,41 @@
-import { Router, Request, Response } from 'express';
+import { Router, Request, Response, NextFunction } from 'express';
 import fs from 'fs';
-
+import path from 'path';
 import ImageResizer from '../misc/image_resizer';
 
 const router = Router();
-
 const image_resizer = new ImageResizer();
 
-function getImage(req: Request, res: Response) {
+function getImage(req: Request, res: Response, next: NextFunction) {
 	res.type('image/*');
-	let image_path = image_resizer.images_path + '\\' + req.params.file_name;
+	let image_path = path.join(image_resizer.images_path, req.params.file_name);
+	// Check if the image exists first
 	fs.exists(image_path, (exists) => {
 		if (exists) {
-			let aspect: boolean = req.query.preserve_aspect === 'true';
-			image_resizer.resize(image_path, req.query.size, aspect)
-				.then(result => res.end(result, 'binary'))
-				.catch(err => { res.type('json'); res.json('An error occured while resizing the image: ' + err) });
+			// If there's no size received , return the original image.
+			if (!req.query.size) {
+				fs.readFile(image_path, (err, image) => {
+					if (err) next(err);
+					res.end(image, 'binary');
+				});
+			} else {
+				let aspect: boolean = req.query.preserve_aspect === 'true';
+				image_resizer.resize(image_path, req.query.size, aspect)
+					.then(result => res.end(result, 'binary'))
+					.catch(err => next(err));
+			}
 		}
 		else {
-			res.sendStatus(404);
+			res.render('error', { message: '404: Page not Found' });
 		}
 	});
 }
 
 function getStats(req: Request, res: Response) {
-	res.json({ message: 'This is just an API endpoint for images', stats: image_resizer.stats });
+	res.render('images.pug', {
+		message: 'This is an API endpoint for images',
+		stats: image_resizer.stats
+	});
 }
 
 router.get('/', getStats);
