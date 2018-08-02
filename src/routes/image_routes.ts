@@ -1,19 +1,21 @@
-import { Router, Request, Response, NextFunction } from 'express';
+import { Router, Request, Response } from 'express';
 import fs from 'fs';
-import process from 'process';
-import { isNumber } from 'util';
+
+import ImageResizer from '../misc/image_resizer';
 
 const router = Router();
-const images_path = process.env.IMAGES_PATH || '../images';
-const sharp = require('sharp');
 
-function getImage(req: Request, res: Response, next: NextFunction) {
-	let image_path = images_path + '/' + req.params.file_name;
+const image_resizer = new ImageResizer();
+
+function getImage(req: Request, res: Response) {
+	res.type('image/*');
+	let image_path = image_resizer.images_path + '\\' + req.params.file_name;
 	fs.exists(image_path, (exists) => {
 		if (exists) {
-			processImage(image_path, req.query.size)
-				.then(result => res.end(result))
-				.catch(err => res.send(err));
+			let aspect: boolean = req.query.preserve_aspect === 'true';
+			image_resizer.resize(image_path, req.query.size, aspect)
+				.then(result => res.end(result, 'binary'))
+				.catch(err => { res.type('json'); res.json('An error occured while resizing the image: ' + err) });
 		}
 		else {
 			res.sendStatus(404);
@@ -21,24 +23,11 @@ function getImage(req: Request, res: Response, next: NextFunction) {
 	});
 }
 
-function get(req: Request, res: Response, next: NextFunction) {
-	res.json({ message: 'This is just an API endpoint for images' });
+function getStats(req: Request, res: Response) {
+	res.json({ message: 'This is just an API endpoint for images', stats: image_resizer.stats });
 }
 
-function processImage(image: string, size?: string): Promise<Buffer> {
-	console.log(image);
-	if (size) {
-		let [width, height] = size.split('x');
-		if (isNumber(width) && isNumber(height))
-			return sharp(image).resize(width, height).toBuffer();
-		else
-			throw new Error('Invalid size!');
-	} else {
-		return Promise.resolve(fs.readFileSync(image));
-	}
-}
-
-router.get('/', get);
+router.get('/', getStats);
 router.get('/:file_name', getImage);
 
 export = router;
