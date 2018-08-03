@@ -1,7 +1,7 @@
 const gulp = require('gulp');
 const gts = require('gulp-typescript');
 const pug = require('gulp-pug');
-const OTHER_FILES = ['src/*.json', 'src/**/*.json', 'src/views/*.pug'];
+const OTHER_FILES = ['src/*.json', 'src/**/*.json'];
 
 // pull in the project TypeScript config
 const ts = gts.createProject('tsconfig.json');
@@ -17,20 +17,19 @@ gulp.task('scripts', () => {
     .pipe(gulp.dest('dist'));
 });
 
-gulp.task('watch', ['scripts', 'views'], () => {
-  gulp.watch('src/**/*.ts', ['scripts', 'views']);
+gulp.task('watch', ['scripts', 'pug'], () => {
+  gulp.watch('src/**/*.ts', ['scripts']);
+  gulp.watch('src/views/*.pug', ['pug']);
 });
 
 gulp.task('assets', function () {
   return gulp.src(OTHER_FILES)
     .pipe(gulp.dest('dist'));
 });
-gulp.task('views', function buildHTML() {
-  return gulp.src('views/*.pug')
-    .pipe(pug({
-      // Your options in here.
-    }))
-    .pipe(gulp.dest('dist'));
+
+gulp.task('pug', function buildHTML() {
+  return gulp.src('src/views/*.pug')
+    .pipe(gulp.dest('dist/views'));
 });
 
 gulp.task('default', ['watch', 'assets']);

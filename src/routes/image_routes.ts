@@ -32,7 +32,8 @@ function getImage(req: Request, res: Response, next: NextFunction) {
 }
 
 function getStats(req: Request, res: Response) {
-	res.render('images.pug', {
+	res.render('images', {
+		title: 'Stats',
 		message: 'This is an API endpoint for images',
 		stats: image_resizer.stats
 	});

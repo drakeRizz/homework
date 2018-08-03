@@ -42,6 +42,7 @@
     "@types/sharp": "^0.17.9",
     "body-parser": "^1.18.3",
     "debug": "^3.1.0",
+    "diskusage": "^0.2.4",
     "express": "^4.16.3",
     "gulp-pug": "^4.0.1",
     "morgan": "^1.9.0",

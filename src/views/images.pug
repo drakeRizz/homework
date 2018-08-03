@@ -2,5 +2,25 @@ html
   head
     title= title
   body
-    h1= message
-	p= stats
+    h1= title
+    h4= message
+    hr
+    div
+      h2 Cache stats
+      p Cache Hits: #{stats.cache_hits}
+      p Cache Misses: #{stats.cache_misses}
+      hr
+      h2 Files
+      p Original Files: #{stats.original_files}
+      p Resized Files: #{stats.resized_files}
+      hr
+      h2 Process Info (PID: #{stats.p_info.pid})
+      h3 CPU Usage
+      p #{JSON.stringify(stats.p_info.cpu_usage)}
+      h3 Memory Usage
+      p #{stats.p_info.memory_usage}
+      h3 Disk
+      p Available #{(stats.d_info.available / Math.pow(1024,3)).toFixed(3)} GB
+      p Free #{(stats.d_info.free / Math.pow(1024,3)).toFixed(3)} GB
+      p Total #{(stats.d_info.total / Math.pow(1024,3)).toFixed(3)} GB
+    

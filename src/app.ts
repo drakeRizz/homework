@@ -33,8 +33,7 @@ class App {
 		this.app.use('/image', image_routes);
 	}
 	private viewEngine(): void {
-		console.log(__dirname + '..' + process.cwd());
-		this.app.set('views', './views');
+		this.app.set('views', path.join(__dirname, 'views'));
 		this.app.set('view engine', 'pug')
 		this.app.get('/', function (req, res) {
 			res.render('index', { title: 'Image Resizer', message: 'Welcome! \n Please use /image endpoint to retrieve/resize an image.' });
@@ -44,12 +43,12 @@ class App {
 	private errorHandlers(): void {
 		// Handle 404
 		this.app.use((_req, res) => {
-			res.render('error', { message: '404: Page not Found' });
+			res.render('error', { title: 'Error :(', message: '404: Page not Found' });
 		});
 
 		// Handle 500
 		this.app.use((_req, res, _next) => {
-			res.render('error', { message: '500: Internal Server Error' });
+			res.render('error', { title: 'Error :(', message: '500: Internal Server Error' });
 		});
 	}
 

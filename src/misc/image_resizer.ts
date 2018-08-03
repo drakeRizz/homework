@@ -29,7 +29,6 @@ class ImageResizer {
         return new Promise((resolve, reject) => {
             fs.exists(out_path, (exists) => {
                 // if the file was already resized
-                console.log(out_path);
                 if (exists) {
                     fs.readFile(out_path, (err, data) => {
                         if (err) reject(err);
