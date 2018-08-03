@@ -3,7 +3,7 @@ import express from 'express';
 import logger from 'morgan';
 import bodyParser from 'body-parser';
 import image_routes from './routes/image_routes';
-
+import createError from 'http-errors';
 
 // Creates and configures an ExpressJS web server.
 class App {
@@ -24,6 +24,7 @@ class App {
 		this.app.use(logger('dev'));
 		this.app.use(bodyParser.json());
 		this.app.use(bodyParser.urlencoded({ extended: false }));
+		this.app.use(express.static(path.join(__dirname, 'public')));
 
 	}
 
@@ -36,19 +37,26 @@ class App {
 		this.app.set('views', path.join(__dirname, 'views'));
 		this.app.set('view engine', 'pug')
 		this.app.get('/', function (req, res) {
-			res.render('index', { title: 'Image Resizer', message: 'Welcome! \n Please use /image endpoint to retrieve/resize an image.' });
+			res.render('index', { title: 'Image Resizer', message: '\n Please use /image endpoint to retrieve/resize an image.' });
 		})
 	}
+
 	//	Set error handlers
 	private errorHandlers(): void {
-		// Handle 404
-		this.app.use((_req, res) => {
-			res.render('error', { title: 'Error :(', message: '404: Page not Found' });
+		// catch 404 and forward to error handler
+		this.app.use(function (req, res, next) {
+			next(createError(404));
 		});
 
-		// Handle 500
-		this.app.use((_req, res, _next) => {
-			res.render('error', { title: 'Error :(', message: '500: Internal Server Error' });
+		// error handler
+		this.app.use(function (err: any, req: any, res: any, next: any) {
+			// set locals, only providing error in development
+			res.locals.message = err.message;
+			res.locals.error = req.app.get('env') === 'development' ? err : {};
+
+			// render the error page
+			res.status(err.status || 500);
+			res.render('error');
 		});
 	}
 

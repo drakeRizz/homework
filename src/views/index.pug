@@ -1,6 +1,6 @@
-html
-  head
-    title= title
-  body
-    h1= title
-    h4= message
+extends layout
+
+block content
+  h1= title
+  p Welcome to #{title}
+  p #{message}

@@ -38,6 +38,7 @@
     "typescript": "^3.0.1"
   },
   "dependencies": {
+    "@types/http-errors": "^1.6.1",
     "@types/pug": "^2.0.4",
     "@types/sharp": "^0.17.9",
     "body-parser": "^1.18.3",
