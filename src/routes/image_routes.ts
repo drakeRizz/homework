@@ -32,9 +32,9 @@ function getImage(req: Request, res: Response, next: NextFunction) {
 }
 
 function getStats(req: Request, res: Response) {
-	res.render('images', {
+	res.render('stats', {
 		title: 'Stats',
-		message: 'This is an API endpoint for images',
+		message: 'This is an API endpoint for images. It also provides some quick stats.',
 		stats: image_resizer.stats
 	});
 }

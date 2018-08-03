@@ -30,15 +30,16 @@ class App {
 
 	//	Configure API endpoints.
 	private routes(): void {
-		//this.app.use('/', index_routes);
 		this.app.use('/image', image_routes);
+		this.app.use('/', function (req, res) {
+			res.render('index', { title: 'Image Resizer', message: '\n Please use /image endpoint to retrieve/resize an image.' });
+		})
 	}
+
 	private viewEngine(): void {
 		this.app.set('views', path.join(__dirname, 'views'));
 		this.app.set('view engine', 'pug')
-		this.app.get('/', function (req, res) {
-			res.render('index', { title: 'Image Resizer', message: '\n Please use /image endpoint to retrieve/resize an image.' });
-		})
+
 	}
 
 	//	Set error handlers

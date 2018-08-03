@@ -17,10 +17,10 @@ block content
     h2 Process Info (PID: #{stats.getProcessInfo().pid})
     p  Uptime: #{stats.getProcessInfo().uptime} minutes
     p  Platform: #{stats.getProcessInfo().platform}
-    h3 Memory Usage
+    h3 Environment Memory Usage
     p #{stats.getProcessInfo().memory_usage.free.toFixed(2)} GB / #{stats.getProcessInfo().memory_usage.total.toFixed(2)} GB
 
-    h3 Disk
+    h3 Environment Disk
     p Available: #{(stats.getDiskSpace().available / Math.pow(1024,3)).toFixed(3)} GB
     p Free: #{(stats.getDiskSpace().free / Math.pow(1024,3)).toFixed(3)} GB
     p Total: #{(stats.getDiskSpace().total / Math.pow(1024,3)).toFixed(3)} GB
