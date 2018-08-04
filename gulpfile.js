@@ -1,6 +1,8 @@
 const gulp = require('gulp');
 const gts = require('gulp-typescript');
 const pug = require('gulp-pug');
+const tslint = require('gulp-tslint');
+
 const OTHER_FILES = ['src/*.json', 'src/**/*.json'];
 
 // pull in the project TypeScript config
@@ -22,13 +24,17 @@ gulp.task('pug', () => {
     .pipe(gulp.dest('dist/views'));
 });
 
+gulp.task('tslint', () => {
+  ts.src().pipe(tslint({}))
+})
+
 gulp.task('styles', () => {
   return gulp.src('src/public/**/*.css')
     .pipe(gulp.dest('dist/public'));
 });
 
-gulp.task('watch', ['scripts', 'pug', 'styles'], () => {
-  gulp.watch('src/**/*.ts', ['scripts']);
+gulp.task('watch', () => {
+  gulp.watch('src/**/*.ts', ['scripts', 'tslint']);
   gulp.watch('src/views/*.pug', ['pug']);
   gulp.watch('src/public', ['styles']);
 });

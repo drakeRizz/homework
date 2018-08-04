@@ -16,7 +16,6 @@ describe('image-route', () => {
 	});
 });
 
-
 describe('base-route', () => {
 	it('should return the stats page', () => {
 		return chai.request(app).get('/')

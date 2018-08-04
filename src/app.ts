@@ -1,17 +1,17 @@
-import path from 'path';
-import express from 'express';
-import logger from 'morgan';
 import bodyParser from 'body-parser';
+import express from 'express';
+import createError from 'http-errors';
+import logger from 'morgan';
+import path from 'path';
 import image_router from './routes/image_router';
 import stats_router from './routes/stats_router';
-import createError from 'http-errors';
 
 // Creates and configures an ExpressJS web server.
 class App {
 
 	public app: express.Application;
 
-	//Run configuration methods on the Express instance.
+	// Run configuration methods on the Express instance.
 	constructor() {
 		this.app = express();
 		this.viewEngine();
@@ -20,7 +20,7 @@ class App {
 		this.errorHandlers();
 	}
 
-	//	Configure Express middleware.
+	// Configure Express middleware.
 	private middleware(): void {
 		this.app.use(logger('dev'));
 		this.app.use(bodyParser.json());
@@ -41,19 +41,19 @@ class App {
 
 	private viewEngine(): void {
 		this.app.set('views', path.join(__dirname, 'views'));
-		this.app.set('view engine', 'pug')
+		this.app.set('view engine', 'pug');
 
 	}
 
-	//	Set error handlers
+	// Set error handlers
 	private errorHandlers(): void {
 		// catch 404 and forward to error handler
-		this.app.use(function (req, res, next) {
+		this.app.use((req, res, next) => {
 			next(createError(404));
 		});
 
 		// error handler
-		this.app.use(function (err: any, req: any, res: any, next: any) {
+		this.app.use((err: any, req: any, res: any, next: any) => {
 			// set locals, only providing error in development
 			res.locals.message = err.message;
 			res.locals.error = req.app.get('env') === 'development' ? err : {};
