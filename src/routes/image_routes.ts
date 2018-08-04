@@ -7,8 +7,9 @@ const router = Router();
 const image_resizer = new ImageResizer();
 
 function getImage(req: Request, res: Response, next: NextFunction) {
-	res.type('image/*');
+
 	let image_path = path.join(image_resizer.images_path, req.params.file_name);
+	res.type(`image/${path.extname(image_path).substring(1)}`);
 	// Check if the image exists first
 	fs.exists(image_path, (exists) => {
 		if (exists) {

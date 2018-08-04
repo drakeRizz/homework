@@ -6,8 +6,8 @@
   "scripts": {
     "start": "node dist/index.js",
     "startmon": "nodemon dist/index.js",
-    "build": "gulp scripts",
-    "test": "mocha --reporter spec --require ts-node/register test/**/*.ts"
+    "build": "gulp build",
+    "test": "mocha --reporter nyan --require ts-node/register test/**/*.ts"
   },
   "repository": {
     "type": "git",
@@ -33,7 +33,6 @@
     "gulp": "^3.9.1",
     "gulp-typescript": "^5.0.0-alpha.3",
     "mocha": "^5.2.0",
-    "sharp": "^0.20.5",
     "ts-node": "^7.0.0",
     "typescript": "^3.0.1"
   },
@@ -46,6 +45,7 @@
     "diskusage": "^0.2.4",
     "express": "^4.16.3",
     "gulp-pug": "^4.0.1",
+    "sharp": "^0.20.5",
     "morgan": "^1.9.0",
     "pug": "^2.0.3",
     "tslint": "^5.11.0"
