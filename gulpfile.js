@@ -24,17 +24,13 @@ gulp.task('pug', () => {
     .pipe(gulp.dest('dist/views'));
 });
 
-gulp.task('tslint', () => {
-  ts.src().pipe(tslint({}))
-})
-
 gulp.task('styles', () => {
   return gulp.src('src/public/**/*.css')
     .pipe(gulp.dest('dist/public'));
 });
 
 gulp.task('watch', () => {
-  gulp.watch('src/**/*.ts', ['scripts', 'tslint']);
+  gulp.watch('src/**/*.ts', ['scripts']);
   gulp.watch('src/views/*.pug', ['pug']);
   gulp.watch('src/public', ['styles']);
 });

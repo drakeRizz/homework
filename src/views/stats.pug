@@ -6,22 +6,22 @@ block content
   hr
   div
     h2 Cache stats
-    p Cache Hits: #{stats.cache_hits}
-    p Cache Misses: #{stats.cache_misses}
+    p Cache Hits: #{stats.cacheHits}
+    p Cache Misses: #{stats.cacheMisses}
     hr
     h2 Files
-    p Original Files: #{stats.getOriginalFiles()}
-    p Resized Files: #{stats.getResizedFiles()}
+    p Original Files: #{stats.originalFiles}
+    p Resized Files: #{stats.resizedFiles}
     hr
 
-    h2 Process Info (PID: #{stats.getProcessInfo().pid})
-    p  Uptime: #{stats.getProcessInfo().uptime} minutes
-    p  Platform: #{stats.getProcessInfo().platform}
+    h2 Process Info (PID: #{stats.pInfo.pid})
+    p  Uptime: #{stats.pInfo.uptime} minutes
+    p  Platform: #{stats.pInfo.platform}
     h3 Environment Memory Usage
-    p #{stats.getProcessInfo().memory_usage.free.toFixed(2)} GB / #{stats.getProcessInfo().memory_usage.total.toFixed(2)} GB
+    p #{stats.pInfo.memory_usage.free.toFixed(2)} GB / #{stats.pInfo.memory_usage.total.toFixed(2)} GB
 
     h3 Environment Disk
-    p Available: #{stats.getDiskSpace().available } GB
-    p Free: #{stats.getDiskSpace().free } GB
-    p Total: #{stats.getDiskSpace().total } GB
+    p Available: #{stats.dInfo.available } GB
+    p Free: #{stats.dInfo.free } GB
+    p Total: #{stats.dInfo.total } GB
     
