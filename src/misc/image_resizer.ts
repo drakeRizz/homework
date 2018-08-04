@@ -67,7 +67,7 @@ function assureCacheDirectoryExistance(path: string) {
 }
 
 function isNumeric(n: number) {
-    return !isNaN(n) && isFinite(n);
+    return !isNaN(n) && isFinite(n) && n > 0;
 }
 
-export default ImageResizer;
+export default new ImageResizer();

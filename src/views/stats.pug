@@ -21,7 +21,7 @@ block content
     p #{stats.getProcessInfo().memory_usage.free.toFixed(2)} GB / #{stats.getProcessInfo().memory_usage.total.toFixed(2)} GB
 
     h3 Environment Disk
-    p Available: #{(stats.getDiskSpace().available / Math.pow(1024,3)).toFixed(3)} GB
-    p Free: #{(stats.getDiskSpace().free / Math.pow(1024,3)).toFixed(3)} GB
-    p Total: #{(stats.getDiskSpace().total / Math.pow(1024,3)).toFixed(3)} GB
+    p Available: #{stats.getDiskSpace().available } GB
+    p Free: #{stats.getDiskSpace().free } GB
+    p Total: #{stats.getDiskSpace().total } GB
     

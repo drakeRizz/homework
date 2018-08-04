@@ -9,7 +9,7 @@ import sharp from 'sharp';
 chai.use(chaiHttp);
 
 const expect = chai.expect;
-const image_resizer = new ImageResizer();
+
 
 var image: Buffer;
 
@@ -20,7 +20,7 @@ before(function () {
 		.get('/1024')
 		.then(response => {
 			image = response.body;
-			fs.writeFileSync(path.join(image_resizer.images_path, 'test.jpg'), image);
+			fs.writeFileSync(path.join(ImageResizer.images_path, 'test.jpg'), image);
 		})
 })
 
@@ -59,11 +59,19 @@ describe('Image resizer', () => {
 			});
 	});
 
-	it('should resize an image', async () => {
-		return chai.request(app).get('/')
+	it('should fail if invalid size provided', () => {
+		return chai.request(app).get('/image/test.jpg?size=zzz')
 			.then(res => {
-				expect(res.status).to.eql(200);
-				expect(res.text).to.contain('Welcome');
+				expect(res.status).to.eql(500);
+				expect(res.text).to.contain('Cannot resize');
+			});
+	});
+
+	it('should return 404 if image is not existing', () => {
+		return chai.request(app).get('/image/this_does_not_exist.jpg')
+			.then(res => {
+				expect(res.status).to.eql(404);
+				expect(res.text).to.contain('Image not found');
 			});
 	});
 

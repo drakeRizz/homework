@@ -2,14 +2,13 @@ import { Router, Request, Response, NextFunction } from 'express';
 import fs from 'fs';
 import path from 'path';
 import ImageResizer from '../misc/image_resizer';
+import createError from 'http-errors';
 
 const router = Router();
-const image_resizer = new ImageResizer();
 
 function getImage(req: Request, res: Response, next: NextFunction) {
-
-	let image_path = path.join(image_resizer.images_path, req.params.file_name);
-	res.type(`image/${path.extname(image_path).substring(1)}`);
+	let image_path = path.join(ImageResizer.images_path, req.params.file_name);
+	let resource_type = `image/${path.extname(image_path).substring(1)}`;
 	// Check if the image exists first
 	fs.exists(image_path, (exists) => {
 		if (exists) {
@@ -17,30 +16,23 @@ function getImage(req: Request, res: Response, next: NextFunction) {
 			if (!req.query.size) {
 				fs.readFile(image_path, (err, image) => {
 					if (err) next(err);
+					res.type(resource_type);
 					res.end(image, 'binary');
 				});
 			} else {
 				let aspect: boolean = req.query.preserve_aspect === 'true';
-				image_resizer.resize(image_path, req.query.size, aspect)
-					.then(result => res.end(result, 'binary'))
-					.catch(err => next(err));
+				ImageResizer.resize(image_path, req.query.size, aspect)
+					.then(result => { res.type(resource_type); res.end(result, 'binary') })
+					.catch(err => next(createError('Cannot resize the image!')));
 			}
 		}
 		else {
-			res.render('error', { message: '404: Page not Found' });
+			next(createError(404, 'Image not found!'));
 		}
 	});
 }
 
-function getStats(req: Request, res: Response) {
-	res.render('stats', {
-		title: 'Stats',
-		message: 'This is an API endpoint for images. It also provides some quick stats.',
-		stats: image_resizer.stats
-	});
-}
 
-router.get('/', getStats);
 router.get('/:file_name', getImage);
 
 export = router;

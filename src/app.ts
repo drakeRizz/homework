@@ -2,7 +2,8 @@ import path from 'path';
 import express from 'express';
 import logger from 'morgan';
 import bodyParser from 'body-parser';
-import image_routes from './routes/image_routes';
+import image_router from './routes/image_router';
+import stats_router from './routes/stats_router';
 import createError from 'http-errors';
 
 // Creates and configures an ExpressJS web server.
@@ -28,12 +29,14 @@ class App {
 
 	}
 
-	//	Configure API endpoints.
+	/**
+	 * Configure API endpoints
+	 * '/' will be the stats page
+	 * '/image' will be the image resizer
+	 */
 	private routes(): void {
-		this.app.use('/image', image_routes);
-		this.app.use('/', function (req, res) {
-			res.render('index', { title: 'Image Resizer', message: '\n Please use /image endpoint to retrieve/resize an image.' });
-		})
+		this.app.use('/image', image_router);
+		this.app.use('/', stats_router);
 	}
 
 	private viewEngine(): void {

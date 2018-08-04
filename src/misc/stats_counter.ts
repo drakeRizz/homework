@@ -2,6 +2,7 @@ import { readdirSync } from "fs";
 import diskusage from 'diskusage';
 import os from 'os';
 import path from 'path';
+import _ from 'lodash';
 
 class StatsCounter {
     public cache_hits: number;
@@ -19,14 +20,14 @@ class StatsCounter {
     getProcessInfo(): object {
         return {
             pid: process.pid,
-            uptime: (process.uptime()/60).toFixed(2),
+            uptime: (process.uptime() / 60).toFixed(2),
             platform: process.platform,
             memory_usage: { free: os.freemem() / Math.pow(1024, 3), total: os.totalmem() / Math.pow(1024, 3) },
         }
     }
     getDiskSpace(): object {
         // Check the partition space
-        return diskusage.checkSync(this.path);
+        return _.mapValues(diskusage.checkSync(this.path), (value) => (value / Math.pow(1024, 3)).toFixed(3));
     }
 }
 
