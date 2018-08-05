@@ -1,6 +1,6 @@
 {
   "name": "resizer",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "description": "A microservice created in order to offer resized images",
   "main": "dist/index.js",
   "scripts": {
@@ -12,14 +12,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/drakeRizz/homework.git"
+    "url": "git+https://github.com/drakeRizz/node-image-resizer-api.git"
   },
   "author": "Mircea Savin",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/drakeRizz/homework/issues"
+    "url": "https://github.com/drakeRizz/node-image-resizer-api/issues"
   },
-  "homepage": "https://github.com/drakeRizz/homework#readme",
+  "homepage": "https://github.com/drakeRizz/node-image-resizer-api#readme",
   "devDependencies": {
     "@types/body-parser": "^1.17.0",
     "@types/chai": "^4.1.4",
