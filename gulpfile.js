@@ -40,6 +40,4 @@ gulp.task('assets', function () {
     .pipe(gulp.dest('dist'));
 });
 
-gulp.task('default', ['watch', 'assets']);
-
-gulp.task('build', ['scripts', 'pug', 'styles', 'assets']);
+gulp.task('default', ['scripts', 'pug', 'styles', 'assets']);

@@ -12,6 +12,7 @@ class StatsCounter {
 	public dInfo: object;
 	public originalFiles: number;
 	public resizedFiles: number;
+	public monitor: NodeJS.Timer;
 
 	constructor(private pathToImages: string) {
 		this.cacheHits = 0;
@@ -20,7 +21,8 @@ class StatsCounter {
 		this.resizedFiles = 0;
 		this.pInfo = {};
 		this.dInfo = {};
-		this.monitoring(10);
+		this.monitor = this.monitoring(10);
+		this.monitor.unref();
 	}
 
 	private getOriginalFiles(): number {
@@ -51,9 +53,10 @@ class StatsCounter {
 		this.originalFiles = this.getOriginalFiles();
 		this.resizedFiles = this.getResizedFiles();
 	}
-	private monitoring(seconds: number) {
+
+	private monitoring(seconds: number): NodeJS.Timer {
 		this.getAll();
-		setInterval(this.getAll, seconds * 1000);
+		return setInterval(() => this.getAll(), seconds * 1000);
 	}
 }
 
