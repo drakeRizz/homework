@@ -15,7 +15,7 @@ Access the '/image' route followed by the name of an image in order to retrieve 
 ## Installing the service
 Clone this repository using *git* in a destination path :
 
-> git clone https://github.com/drakeRizz/homework.git 'destination_path'
+> git clone https://github.com/drakeRizz/node-image-resizer-api.git 'destination_path'
 
 ### Run locally
 After cloning the repository in the desired path, run the following command to install all the dependencies
@@ -58,11 +58,12 @@ Then we can do a quick test for our two API routes using the following commands 
 >artillery quick --count 1000 -n 10 http://localhost/
 >artillery quick --count 1000 -n 10 http://localhost/image/doge.jpg # to retrieve an image
 
-**count** represents the number of virtual users that we want to simulate
+**count** represents the number of virtual users that we want to simulate,
+
 **n** represents the concurrency factor. How many concurent connections do we want to have from the entire 'count'.
 
 Testing the image route with 1000 connections and 10 concurent results :
 
 ![Artillery result](https://imgur.com/download/LcWnwfv)
 
-Due to the fact that the development PC doesn't have powerful CPU, the results may be slightly worse than on a PC with a powerful CPU. Eventhough, all status codes were 200 (OK) for 1000 requests with concurrency 10. The minimum latency was 3.0 ms and the maximum was half a second ( when CPU approached 100%). 145 requests per second were sent.
+Due to the fact that the development PC doesn't have powerful CPU, the results may be slightly worse than on a PC with a powerful CPU. Eventhough, all status codes were 200 (OK) for 1000 requests with concurrency 10. The minimum latency was 3.8 ms and the maximum was half a second ( when CPU approached 100%). 145 requests per second were sent.
