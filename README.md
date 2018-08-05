@@ -64,4 +64,5 @@ Then we can do a quick test for our two API routes using the following commands 
 Testing the image route with 1000 connections and 10 concurent results :
 
 ![Artillery result](https://imgur.com/download/LcWnwfv)
+
 Due to the fact that the development PC doesn't have powerful CPU, the results may be slightly worse than on a PC with a powerful CPU. Eventhough, all status codes were 200 (OK) for 1000 requests with concurrency 10. The minimum latency was 3.0 ms and the maximum was half a second ( when CPU approached 100%). 145 requests per second were sent.
